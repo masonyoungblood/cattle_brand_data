@@ -4,9 +4,13 @@ Mason Youngblood
 
 The Kansas cattle brand books, available from the [state
 library](https://cdm16884.contentdm.oclc.org/digital/collection/p16884coll5/id/317/rec/2),
-log all of the brands registered in the state since 1941. Starting in
-1990, Kansas began to use a coding system to catalog all of their cattle
-brands. Below are the editions that include this coding system:
+log all of the brands registered in the state since 1941. Note that
+Kansas also releases
+[supplements](https://cdm16884.contentdm.oclc.org/digital/collection/p16884coll5/id/318)
+between brand books, which log new and transferred brands from the
+corresponding year. Starting in 1990, Kansas began to use a coding
+system to catalog all of their cattle brands. Below are the brand books
+that include this coding system:
 
 -   1990 (9th edition) \[scan\]
 -   1998 (10th edition) \[scan\]
