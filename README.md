@@ -106,7 +106,7 @@ with the corresponding pages and years (example below).
 
 ``` r
 #load brand data
-load("brand_data.RData")
+brand_data <- read.csv("brand_data.csv")[,-1]
 
 #print first 20 rows
 brand_data[1:20,]
