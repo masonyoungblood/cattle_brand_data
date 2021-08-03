@@ -19,7 +19,7 @@ This coding system includes information on the components that make up each bran
 &nbsp;
 
 <center>
-![](brand_book_example.png){width=100%}
+![](figures/brand_book_example.png){width=100%}
 </center>
 
 &nbsp;
@@ -27,7 +27,7 @@ This coding system includes information on the components that make up each bran
 Each brand code is composed of 13 digits: four sets of three digits that correspond to the components of the brand, and a final digit that indicates the location of the brand on the animal (see below). Some components are a single digit (e.g. "D" and "S" below), while others are two (e.g. "A3" is the caret below) or three. For one- and two-digit components, the third digit corresponds to the angle of rotation of the symbol. When multiple brands have the same set of components in different relative positions, the 12th digit is used to distinguish between the different versions. A detailed description of the coding system, as well as an index of all possible components of brands, can be found in the introduction of each of the cattle brand books.
 
 <center>
-![](brand_code_diagram.png){width=100%}
+![](figures/brand_code_diagram.png){width=100%}
 </center>
 
 1990, 1998, and 2003 are scans of the printed books, and thus have noise and artifacts that interfere with optical character recognition (OCR). As such, we chose to manually extract the cattle brands and zip codes from these first three books by hand (*in progress*). 2008, 2014, 2015, and 2016, on the other hand, are the original PDF files. We chose to automatically extract the cattle brands and zip codes from these latter four books using [Tesseract OCR](https://tesseract-ocr.github.io/) ([version 4.1.1](https://github.com/tesseract-ocr/tesseract/releases/tag/4.1.1), compiled [manually](https://tesseract-ocr.github.io/tessdoc/Compiling.html#macos)).
@@ -85,7 +85,7 @@ zip_choropleth(zip_data, num_colors = 1, state_zoom = "kansas")
 This distribution is roughly consistent with the most recent cattle inventory of the state (shown below). The most important thing to note is that brand registrations do not cluster around the highest (human) population density parts of the state such as Topeka and Kansas City (in the northeast), which would suggest that they are not registered where they are actively used by ranchers.
 
 <center>
-![](21KScattle_1.png){width=75%}
+![](figures/21KScattle_1.png){width=75%}
 </center>
 
 

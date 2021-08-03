@@ -27,7 +27,7 @@ brand book format (page 60 of 2016).
  
 
 <center>
-<img src="brand_book_example.png" style="width:100.0%" />
+<img src="figures/brand_book_example.png" style="width:100.0%" />
 </center>
 
  
@@ -45,7 +45,7 @@ system, as well as an index of all possible components of brands, can be
 found in the introduction of each of the cattle brand books.
 
 <center>
-<img src="brand_code_diagram.png" style="width:100.0%" />
+<img src="figures/brand_code_diagram.png" style="width:100.0%" />
 </center>
 
 1990, 1998, and 2003 are scans of the printed books, and thus have noise
@@ -195,5 +195,5 @@ the northeast), which would suggest that they are not registered where
 they are actively used by ranchers.
 
 <center>
-<img src="21KScattle_1.png" style="width:75.0%" />
+<img src="figures/21KScattle_1.png" style="width:75.0%" />
 </center>
