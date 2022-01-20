@@ -54,9 +54,9 @@ found in the introduction of each of the cattle brand books.
 
 1990, 1998, and 2003 are scans of the printed books, and thus have noise
 and artifacts that interfere with optical character recognition (OCR).
-As such, we chose to manually extract the cattle brands and zip codes
-from these first three books by hand (*in progress*). 2008, 2014, 2015,
-and 2016, on the other hand, are the original PDF files. We chose to
+Manual extraction is extremely labor intensive, so we chose to only
+collect the cattle brands and zip codes from 1990. 2008, 2014, 2015, and
+2016, on the other hand, are the original PDF files. We chose to
 automatically extract the cattle brands and zip codes from these latter
 four books using [Tesseract OCR](https://tesseract-ocr.github.io/)
 ([version
@@ -102,45 +102,43 @@ errors in OCR were caused by mis-specified brand codes that had an extra
 component or special characters not included in the index of the brand
 book. After all data was compiled for each year, we manually corrected
 any zip codes that did not match a real zip code from a US state or
-territory. A random subset of 500 brand codes (exported as
-*brands\_to\_check.csv*) will be manually checked by another member of
-the research team to estimate the accuracy of the OCR pipeline. The
-result of OCR is a combined dataframe of cattle brands and zip codes
-with the corresponding pages and years (example below).
+territory.
+
+A random subset of 500 brand codes (exported as *brands\_to\_check.csv*)
+will be manually checked by another member of the research team to
+estimate the accuracy of the OCR pipeline. The result of OCR is a
+combined dataframe of cattle brands and zip codes with the corresponding
+pages and years (example below).
 
 ``` r
 #load brand data
-brand_data <- read.csv("brand_data.csv")[,-1]
+brand_data <- read.csv("brand_data.csv")[, -1]
 
 #print first 20 rows
 brand_data[1:20,]
 ```
 
     ##            brand location page year
-    ## 1  #,,,,,,,,,,,1    67563    1 2008
-    ## 2  #,,,,,,,,,,11    67835    1 2008
-    ## 3  #,,,,,,,,,,13    67880    1 2008
-    ## 4  $,,,,,,,,,,11    67104    1 2008
-    ## 5  $,,,,,,,,,,13    66428    1 2008
-    ## 6  $,,,,,,,,,,15    67869    1 2008
-    ## 7  $,,,,,,,,,,16    67664    1 2008
-    ## 8  $,,-,,,,,,,,1    67530    1 2008
-    ## 9  $,2,,,,,,,,,1    67659    1 2008
-    ## 10 %,,,,,,,,,,,2    67529    1 2008
-    ## 11 (,,(,,,,,,,,1    66548    1 2008
-    ## 12 (,,(,,7,,,,,5    67862    1 2008
-    ## 13 (,,),,),,,,,1    67333    1 2008
-    ## 14 (,,),,,,,,,,1    67745    1 2008
-    ## 15 (,,),,,,,,,,2    67745    1 2008
-    ## 16 (,,),,,,,,,,5    67745    1 2008
-    ## 17 (,,),,,,,,,13    67052    1 2008
-    ## 18 (,,),,,,,,,15    67745    1 2008
-    ## 19 (,,),,I,,-,,2    67871    1 2008
-    ## 20 (,,),,M,,,,,1    67546    1 2008
-
-Once the cattle brands and zip codes from 1990, 1998, and 2003 have been
-collected they will be added to this combined dataframe. For now, the
-details below only related to the data from 2008-2016.
+    ## 1  #,,,,,,,,,,,1    67563    1 1990
+    ## 2  #,,,,,,,,,,11    67835    1 1990
+    ## 3  #,,,,,,,,,,12    66092    1 1990
+    ## 4  $,,$,,,,,,,,1    03060    1 1990
+    ## 5  $,,,,,,,,,,,1    66617    1 1990
+    ## 6  $,,,,,,,,,,,2    67576    1 1990
+    ## 7  $,,,,,,,,,,,3    67333    1 1990
+    ## 8  $,,,,,,,,,,11    67104    1 1990
+    ## 9  $,,,,,,,,,,12    67347    1 1990
+    ## 10 $,,,,,,,,,,13    66428    1 1990
+    ## 11 $,,,,,,,,,,15    67869    1 1990
+    ## 12 $,,-,,D,,,,,2    67860    1 1990
+    ## 13 $,,I,,C,,I,,1    67665    1 1990
+    ## 14 $,,I,,C,,I,,2    67342    1 1990
+    ## 15 $,,R,,,,,,,,1    66736    1 1990
+    ## 16 %,,,,,,,,,,,2    67529    1 1990
+    ## 17 (,,(,,,,,,,,1    66548    1 1990
+    ## 18 (,,(,,7,,,,,5    81090    1 1990
+    ## 19 (,,(,,QC1,,,2    66507    1 1990
+    ## 20 (,,(,,S,5,,,1    67122    1 1990
 
 ``` r
 #load zip code data
@@ -151,7 +149,7 @@ zip_codes <- zipcodeR::zip_code_db
 unique_brand_data <- brand_data[-which(duplicated(brand_data$brand)), ]
 ```
 
-There are 20,981 unique brands in the dataset (not accounting for the
+There are 33,398 unique brands in the dataset (not accounting for the
 position of the brands on the animals, so the final number will be
 smaller).
 
@@ -162,16 +160,16 @@ states
 ```
 
     ## 
-    ##    KS    CO    NE    OK    TX    MO    AZ    NM    WY    CA    SD    MT    IA 
-    ## 20093   172   166   152   120    52    22    21    21    18    15    14    12 
-    ##    ID    IN    AR    FL    IL    TN    VA    GA    ND    MS    PA    AK    LA 
-    ##    11     8     7     7     7     7     6     5     5     4     4     3     3 
-    ##    MN    NC    NV    AL    KY    UT    WI    HI    MD    MI    NY    OH    OR 
-    ##     3     3     3     2     2     2     2     1     1     1     1     1     1 
-    ##    SC    WA    WV 
-    ##     1     1     1
+    ##    KS    NE    OK    CO    TX    MO    CA    NM    WY    AZ    MT    IA    SD 
+    ## 32150   330   198   196   155    93    35    24    23    22    15    14    13 
+    ##    ID    AR    IL    IN    LA    MS    AL    VA    FL    GA    ND    NV    PA 
+    ##    10     9     9     9     9     7     6     6     5     5     5     5     5 
+    ##    UT    MN    NC    TN    AK    CT    NJ    NY    WA    WI    KY    MD    MI 
+    ##     5     4     4     4     3     3     2     2     2     2     1     1     1 
+    ##    NH    OH    OR    SC    WV 
+    ##     1     1     1     1     1
 
-95.8% of brands are registered in the state of Kansas. Out-of-state
+96.3% of brands are registered in the state of Kansas. Out-of-state
 brands will be excluded from the rest of the analysis. Below is the
 distribution of brands within the state of Kansas.
 
@@ -189,7 +187,7 @@ par(mar = c(0, 0, 0, 0))
 zip_choropleth(zip_data, num_colors = 1, state_zoom = "kansas")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 This distribution is roughly consistent with the most recent cattle
 inventory of the state (shown below). The most important thing to note

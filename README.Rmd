@@ -30,24 +30,36 @@ Each brand code is composed of 13 digits: four sets of three digits that corresp
 ![](figures/brand_code_diagram.png){width=100%}
 </center>
 
-1990, 1998, and 2003 are scans of the printed books, and thus have noise and artifacts that interfere with optical character recognition (OCR). As such, we chose to manually extract the cattle brands and zip codes from these first three books by hand (*in progress*). 2008, 2014, 2015, and 2016, on the other hand, are the original PDF files. We chose to automatically extract the cattle brands and zip codes from these latter four books using [Tesseract OCR](https://tesseract-ocr.github.io/) ([version 4.1.1](https://github.com/tesseract-ocr/tesseract/releases/tag/4.1.1), compiled [manually](https://tesseract-ocr.github.io/tessdoc/Compiling.html#macos)).
+1990, 1998, and 2003 are scans of the printed books, and thus have noise and artifacts that interfere with optical character recognition (OCR). Manual extraction is extremely labor intensive, so we chose to only collect the cattle brands and zip codes from 1990. 2008, 2014, 2015, and 2016, on the other hand, are the original PDF files. We chose to automatically extract the cattle brands and zip codes from these latter four books using [Tesseract OCR](https://tesseract-ocr.github.io/) ([version 4.1.1](https://github.com/tesseract-ocr/tesseract/releases/tag/4.1.1), compiled [manually](https://tesseract-ocr.github.io/tessdoc/Compiling.html#macos)).
 
 Two custom long short-term memory (LSTM) neural networks were separately [trained](https://tesseract-ocr.github.io/tessdoc/tess4/TrainingTesseract-4.00.html) to recognize (1) cattle brand codes and (2) zip codes:
 
 1. The training dataset for the cattle brand codes included 3,134 currently registered brands (via personal correspondence with [Kansas' Brands Program](https://agriculture.ks.gov/divisions-programs/division-of-animal-health/brands-program)) as well as 500,000 simulated brands based on the possible components outlined in the brand books. Training data was rendered in Courier with the following exposures: -2, -1, 0, 1, 2. The base English-language LSTM was trained for an additional 5,000 iterations using this training data. To further improve accuracy we provided this model with a dictionary containing all of the possible brand components, a set of regular expressions matching the full structure of possible brand codes, and we whitelisted only the characters included in the index of each brand book.
 2. The training dataset for the zip codes included all 757 zip codes in Kansas with the state and city, in the same format as in the brand books (e.g. "Bonner Springs, KS  66012"). Training data was rendered in Helvetica with the following exposures: 0, 1, 2, 3. The base English-language LSTM was trained for an additional 5,000 iterations using this training data. To further improve accuracy we provided this model with a dictionary containing all of the zip codes in Kansas and abbreviations for all US states and corresponding regular expressions.
 
-Prior to OCR, all images were manually removed from the brand books using Adobe Acrobat, and all pages were converted to 300 DPI PNG files (same resolution as the training data). OCR was conducted twice for each page, using both the cattle brand LSTM and the zip code LSTM. A series of regular expressions were then used to extract the cattle brands and zip codes from the raw OCR output. Pages that did not result in 57 brands and zip codes (19 rows x 3 columns) were manually corrected. Most errors in OCR were caused by mis-specified brand codes that had an extra component or special characters not included in the index of the brand book. After all data was compiled for each year, we manually corrected any zip codes that did not match a real zip code from a US state or territory. A random subset of 500 brand codes (exported as *brands_to_check.csv*) will be manually checked by another member of the research team to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
+Prior to OCR, all images were manually removed from the brand books using Adobe Acrobat, and all pages were converted to 300 DPI PNG files (same resolution as the training data). OCR was conducted twice for each page, using both the cattle brand LSTM and the zip code LSTM. A series of regular expressions were then used to extract the cattle brands and zip codes from the raw OCR output. Pages that did not result in 57 brands and zip codes (19 rows x 3 columns) were manually corrected. Most errors in OCR were caused by mis-specified brand codes that had an extra component or special characters not included in the index of the brand book. After all data was compiled for each year, we manually corrected any zip codes that did not match a real zip code from a US state or territory.
+
+A random subset of 500 brand codes (exported as *brands_to_check.csv*) will be manually checked by another member of the research team to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
 
 ```{r}
 #load brand data
-brand_data <- read.csv("brand_data.csv")[,-1]
+brand_data <- read.csv("brand_data.csv")[, -1]
 
 #print first 20 rows
 brand_data[1:20,]
 ```
 
-Once the cattle brands and zip codes from 1990, 1998, and 2003 have been collected they will be added to this combined dataframe. For now, the details below only related to the data from 2008-2016.
+```{r, echo = FALSE, eval = FALSE}
+#get subset of 1000 brand codes
+set.seed(12345)
+brands_to_check <- brand_data[sample(nrow(brand_data), 1000, replace = FALSE), ]
+
+#reorder first by year and then by page, to make checking easier
+brands_to_check <- brands_to_check[with(brands_to_check, order(year, page)), ]
+
+#save
+write.csv(brands_to_check, file = "brands_to_check.csv")
+```
 
 ```{r}
 #load zip code data
