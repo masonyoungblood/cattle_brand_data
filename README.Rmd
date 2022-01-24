@@ -50,15 +50,31 @@ brand_data[1:20,]
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
-#get subset of 1000 brand codes
+#get subset of 1500 brand codes
 set.seed(12345)
-brands_to_check <- brand_data[sample(nrow(brand_data), 1000, replace = FALSE), ]
+brands_to_check <- brand_data[sample(nrow(brand_data), 1500, replace = FALSE), ]
 
 #reorder first by year and then by page, to make checking easier
 brands_to_check <- brands_to_check[with(brands_to_check, order(year, page)), ]
 
+#add two columns of 0 for research assistants to replace with 1 when information is incorrect
+brands_to_check$error_brand <- rep(0, nrow(brands_to_check))
+brands_to_check$error_location <- rep(0, nrow(brands_to_check))
+
+#subset into three objects, one for each research assistant
+brands_to_check_elia <- brands_to_check[1:500,]
+brands_to_check_lilia <- brands_to_check[501:1000,]
+brands_to_check_agnes <- brands_to_check[1001:1500,]
+
+#remove rownames
+rownames(brands_to_check_elia) <- NULL
+rownames(brands_to_check_lilia) <- NULL
+rownames(brands_to_check_agnes) <- NULL
+
 #save
-write.csv(brands_to_check, file = "brands_to_check.csv")
+write.csv(brands_to_check_elia, file = "brands_to_check_elia.csv")
+write.csv(brands_to_check_lilia, file = "brands_to_check_lilia.csv")
+write.csv(brands_to_check_agnes, file = "brands_to_check_agnes.csv")
 ```
 
 ```{r}
@@ -99,31 +115,3 @@ This distribution is roughly consistent with the most recent cattle inventory of
 <center>
 ![](figures/21KScattle_1.png){width=75%}
 </center>
-
-The four [most populous counties in Kansas](http://www.usa.com/rank/kansas-state--population-density--county-rank.htm) are Johnson, Wyandotte, Sedgwick, and Shawnee. Collectively, these counties include the three biggest metropolitan areas: Kansas City, Topeka, and Wichita. If a large number of brands are registered in cities, where ranches are unlikely to be located, then it could be indicative of deeper data quality issues.
-
-```{r}
-#collect zip codes for top four counties
-johnson <- zipcodeR::search_county("Johnson", "KS")
-wyandotte <- zipcodeR::search_county("Wyandotte", "KS")
-sedgwick <- zipcodeR::search_county("Sedgwick", "KS")
-shawnee <- zipcodeR::search_county("Shawnee", "KS")
-
-#compile p. o. box and normal zips
-po_box_zips <- c(johnson$zipcode[which(johnson$zipcode_type == "PO Box")],
-                 wyandotte$zipcode[which(wyandotte$zipcode_type == "PO Box")],
-                 sedgwick$zipcode[which(sedgwick$zipcode_type == "PO Box")],
-                 shawnee$zipcode[which(shawnee$zipcode_type == "PO Box")])
-normal_zips <- c(johnson$zipcode[which(johnson$zipcode_type == "Standard")],
-                 wyandotte$zipcode[which(wyandotte$zipcode_type == "Standard")],
-                 sedgwick$zipcode[which(sedgwick$zipcode_type == "Standard")],
-                 shawnee$zipcode[which(shawnee$zipcode_type == "Standard")])
-
-#get proportion of brands that are in metropolitan areas, and in p. o. boxes
-prop_metro <- length(which(unique_brand_data$location %in% c(po_box_zips, normal_zips)))/nrow(unique_brand_data)
-prop_po_box <- length(which(unique_brand_data$location %in% po_box_zips))/nrow(unique_brand_data)
-```
-
-Luckily, it appears that only `r round(prop_metro*100, digits = 2)`% of brands are registered in metropolitan areas, and only `r round(prop_po_box*100, digits = 3)`% are registered to metropolitan P. O. Boxes. This suggests that brand registration in cities is not a significant issue.
-
-

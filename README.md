@@ -199,38 +199,3 @@ they are actively used by ranchers.
 <center>
 <img src="figures/21KScattle_1.png" style="width:75.0%" />
 </center>
-
-The four [most populous counties in
-Kansas](http://www.usa.com/rank/kansas-state--population-density--county-rank.htm)
-are Johnson, Wyandotte, Sedgwick, and Shawnee. Collectively, these
-counties include the three biggest metropolitan areas: Kansas City,
-Topeka, and Wichita. If a large number of brands are registered in
-cities, where ranches are unlikely to be located, then it could be
-indicative of deeper data quality issues.
-
-``` r
-#collect zip codes for top four counties
-johnson <- zipcodeR::search_county("Johnson", "KS")
-wyandotte <- zipcodeR::search_county("Wyandotte", "KS")
-sedgwick <- zipcodeR::search_county("Sedgwick", "KS")
-shawnee <- zipcodeR::search_county("Shawnee", "KS")
-
-#compile p. o. box and normal zips
-po_box_zips <- c(johnson$zipcode[which(johnson$zipcode_type == "PO Box")],
-                 wyandotte$zipcode[which(wyandotte$zipcode_type == "PO Box")],
-                 sedgwick$zipcode[which(sedgwick$zipcode_type == "PO Box")],
-                 shawnee$zipcode[which(shawnee$zipcode_type == "PO Box")])
-normal_zips <- c(johnson$zipcode[which(johnson$zipcode_type == "Standard")],
-                 wyandotte$zipcode[which(wyandotte$zipcode_type == "Standard")],
-                 sedgwick$zipcode[which(sedgwick$zipcode_type == "Standard")],
-                 shawnee$zipcode[which(shawnee$zipcode_type == "Standard")])
-
-#get proportion of brands that are in metropolitan areas, and in p. o. boxes
-prop_metro <- length(which(unique_brand_data$location %in% c(po_box_zips, normal_zips)))/nrow(unique_brand_data)
-prop_po_box <- length(which(unique_brand_data$location %in% po_box_zips))/nrow(unique_brand_data)
-```
-
-Luckily, it appears that only 3.63% of brands are registered in
-metropolitan areas, and only 0.099% are registered to metropolitan P. O.
-Boxes. This suggests that brand registration in cities is not a
-significant issue.
