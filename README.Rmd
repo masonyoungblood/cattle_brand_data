@@ -4,6 +4,8 @@ author: "Mason Youngblood"
 output: github_document
 ---
 
+The associated preregistration document can be found on [OSF](https://osf.io/d4qv3/), and a detailed description of the model in which this data will be used can be found on the [corresponding GitHub](https://github.com/masonyoungblood/CattleBrandABM).
+
 The Kansas cattle brand books, available from the [state library](https://cdm16884.contentdm.oclc.org/digital/collection/p16884coll5/id/317/rec/2), log all of the brands registered in the state since 1941. Note that Kansas also releases [supplements](https://cdm16884.contentdm.oclc.org/digital/collection/p16884coll5/id/318) between brand books, which log new and transferred brands from the corresponding year. Starting in 1990, Kansas began to use a coding system to catalog all of their cattle brands. Below are the brand books that include this coding system:
 
 * 1990 (9th edition) [scan]
@@ -39,7 +41,7 @@ Two custom long short-term memory (LSTM) neural networks were separately [traine
 
 Prior to OCR, all images were manually removed from the brand books using Adobe Acrobat, and all pages were converted to 300 DPI PNG files (same resolution as the training data). OCR was conducted twice for each page, using both the cattle brand LSTM and the zip code LSTM. A series of regular expressions were then used to extract the cattle brands and zip codes from the raw OCR output. Pages that did not result in 57 brands and zip codes (19 rows x 3 columns) were manually corrected. Most errors in OCR were caused by mis-specified brand codes that had an extra component or special characters not included in the index of the brand book. After all data was compiled for each year, we manually corrected any zip codes that did not match a real zip code from a US state or territory.
 
-A random subset of 500 brand codes (exported as *brands_to_check.csv*) will be manually checked by another member of the research team to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
+A random subset of 1,500 brand codes (exported as *brands_to_check.csv*) will be manually checked by three research assistants to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
 
 ```{r}
 #load brand data

@@ -2,6 +2,11 @@ Cattle Brand Data Pipeline
 ================
 Mason Youngblood
 
+The associated preregistration document can be found on
+[OSF](https://osf.io/d4qv3/), and a detailed description of the model in
+which this data will be used can be found on the [corresponding
+GitHub](https://github.com/masonyoungblood/CattleBrandABM).
+
 The Kansas cattle brand books, available from the [state
 library](https://cdm16884.contentdm.oclc.org/digital/collection/p16884coll5/id/317/rec/2),
 log all of the brands registered in the state since 1941. Note that
@@ -104,11 +109,11 @@ book. After all data was compiled for each year, we manually corrected
 any zip codes that did not match a real zip code from a US state or
 territory.
 
-A random subset of 500 brand codes (exported as *brands\_to\_check.csv*)
-will be manually checked by another member of the research team to
-estimate the accuracy of the OCR pipeline. The result of OCR is a
-combined dataframe of cattle brands and zip codes with the corresponding
-pages and years (example below).
+A random subset of 1,500 brand codes (exported as
+*brands\_to\_check.csv*) will be manually checked by three research
+assistants to estimate the accuracy of the OCR pipeline. The result of
+OCR is a combined dataframe of cattle brands and zip codes with the
+corresponding pages and years (example below).
 
 ``` r
 #load brand data
