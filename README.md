@@ -110,7 +110,7 @@ any zip codes that did not match a real zip code from a US state or
 territory.
 
 A random subset of 1,500 brand codes (exported as
-*brands\_to\_check.csv*) will be manually checked by three research
+*brands\_to\_check.csv*) were manually checked by three research
 assistants to estimate the accuracy of the OCR pipeline. The result of
 OCR is a combined dataframe of cattle brands and zip codes with the
 corresponding pages and years (example below).
@@ -144,6 +144,9 @@ brand_data[1:20,]
     ## 18 (,,(,,7,,,,,5    81090    1 1990
     ## 19 (,,(,,QC1,,,2    66507    1 1990
     ## 20 (,,(,,S,5,,,1    67122    1 1990
+
+Based on the manual check, we estimate that there was 0% error in brand
+code transcription and 0.4% error in location transcription.
 
 ``` r
 #load zip code data
@@ -192,7 +195,7 @@ par(mar = c(0, 0, 0, 0))
 zip_choropleth(zip_data, num_colors = 1, state_zoom = "kansas")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 This distribution is roughly consistent with the most recent cattle
 inventory of the state (shown below). The most important thing to note

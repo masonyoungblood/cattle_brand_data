@@ -41,7 +41,7 @@ Two custom long short-term memory (LSTM) neural networks were separately [traine
 
 Prior to OCR, all images were manually removed from the brand books using Adobe Acrobat, and all pages were converted to 300 DPI PNG files (same resolution as the training data). OCR was conducted twice for each page, using both the cattle brand LSTM and the zip code LSTM. A series of regular expressions were then used to extract the cattle brands and zip codes from the raw OCR output. Pages that did not result in 57 brands and zip codes (19 rows x 3 columns) were manually corrected. Most errors in OCR were caused by mis-specified brand codes that had an extra component or special characters not included in the index of the brand book. After all data was compiled for each year, we manually corrected any zip codes that did not match a real zip code from a US state or territory.
 
-A random subset of 1,500 brand codes (exported as *brands_to_check.csv*) will be manually checked by three research assistants to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
+A random subset of 1,500 brand codes (exported as *brands_to_check.csv*) were manually checked by three research assistants to estimate the accuracy of the OCR pipeline. The result of OCR is a combined dataframe of cattle brands and zip codes with the corresponding pages and years (example below).
 
 ```{r}
 #load brand data
@@ -78,6 +78,37 @@ write.csv(brands_to_check_elia, file = "brands_to_check_elia.csv")
 write.csv(brands_to_check_lilia, file = "brands_to_check_lilia.csv")
 write.csv(brands_to_check_agnes, file = "brands_to_check_agnes.csv")
 ```
+
+```{r, echo = FALSE}
+#check elia
+#elia_done <- read.csv("brands_to_check_elia_done.csv")
+#sum(elia_done$error_brand) #0 marked incorrect brand codes
+#sum(elia_done$error_location) #15 marked incorrect brand locations
+#elia_done[which(elia_done$error_location == 1), ] #manual check, actually incorrect are 187, 188, 229
+#0/500 actually incorrect brand codes
+#3/500 actually incorrect brand locations
+
+#check agnes
+#agnes_done <- read.csv("brands_to_check_agnes_done.csv")
+#sum(agnes_done$error_brand) #2 marked incorrect brand codes
+#agnes_done[which(agnes_done$error_brand == 1), ] #manual check, none are actually incorrect
+#sum(agnes_done$error_location) #8 marked incorrect brand locations
+#agnes_done[which(agnes_done$error_location == 1), ] #manual check, none are actually incorrect 
+#0/500 incorrect brand codes
+#0/500 incorrect brand locations
+
+#check lilia
+#lilia_done <- read.csv2("brands_to_check_lilia_done.csv")
+#sum(lilia_done$error_brand) #0 marked incorrect brand codes
+#sum(lilia_done$error_location) #6 marked incorrect brand locations
+#lilia_done[which(lilia_done$error_location == 1), ] #manual check actually incorrect is 404
+
+#compute overall code and location error
+code_error <- 0/1000
+location_error <- 4/1000
+```
+
+Based on the manual check, we estimate that there was `r code_error*100`% error in brand code transcription and `r location_error*100`% error in location transcription.
 
 ```{r}
 #load zip code data
